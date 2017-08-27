@@ -50,6 +50,8 @@ namespace DynamicsOData
             services.AddMvc();
 
             // Add application services.
+            services.Configure<ODataOptions>(this.Configuration.GetSection("ODataOptions"));
+
             services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
             services.AddTransient<IODataService, ODataService>();
             services.AddTransient<IEmailSender, AuthMessageSender>();

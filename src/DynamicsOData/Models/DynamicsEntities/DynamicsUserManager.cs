@@ -16,12 +16,14 @@ namespace DynamicsOData.Models.DynamicsEntities
     public class DynamicsSignInManager<TUser> : SignInManager<TUser> where TUser : class
     {
         private AuthenticationManager authenticationManager;
+        private ODataOptions odataOptions;
 
-        public DynamicsSignInManager(UserManager<TUser> userManager, IHttpContextAccessor contextAccessor, IUserClaimsPrincipalFactory<TUser> claimsFactory, IOptions<IdentityOptions> optionsAccessor, ILogger<SignInManager<TUser>> logger) 
+        public DynamicsSignInManager(UserManager<TUser> userManager, IHttpContextAccessor contextAccessor, IUserClaimsPrincipalFactory<TUser> claimsFactory, IOptions<IdentityOptions> optionsAccessor, ILogger<SignInManager<TUser>> logger, IOptions<ODataOptions> odataOptions) 
             : base(userManager, contextAccessor, claimsFactory, optionsAccessor, logger)
         {
             var context = contextAccessor.HttpContext;
             this.authenticationManager = context.Authentication;
+            this.odataOptions = odataOptions.Value;
         }
 
         public override async Task SignInAsync(TUser user, AuthenticationProperties authenticationProperties, string authenticationMethod = null)
@@ -46,14 +48,10 @@ namespace DynamicsOData.Models.DynamicsEntities
         {
             try
             {
-                string resource = "https://dfmd365-435136c823696c72eaos.cloudax.dynamics.com";
-                string tenant = "https://login.windows.net/dynamicsformembership.onmicrosoft.com";
-                string clientId = "8eb86713-9b96-42a4-93ab-ad0e761c9327";
-
                 var userCredenctial = new UserCredential(userName, password);
 
-                AuthenticationContext authContext = new AuthenticationContext(tenant);
-                AuthenticationResult authenticationResult = await authContext.AcquireTokenAsync(resource, clientId, userCredenctial);
+                AuthenticationContext authContext = new AuthenticationContext(odataOptions.Tenant);
+                AuthenticationResult authenticationResult = await authContext.AcquireTokenAsync(odataOptions.Resource, odataOptions.ClientId, userCredenctial);
 
                 var user = new ApplicationUser {
                     AccessToken = authenticationResult.AccessToken,

@@ -9,35 +9,41 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using DynamicsOData.Models;
 using DynamicsOData.Models.DynamicsEntities;
+using Microsoft.Extensions.Options;
 
 namespace DynamicsOData.Services
 {
     public class ODataService : IODataService
     {
         private ClaimsPrincipal user;
+        private ODataOptions odataOptions;
+        private string customerGroupListUrl;
+        private string customerByGroupUrl;
+        private string customerByIdUrl;
 
-        public static string CustomerGroupListUrl = "https://dfmd365-435136c823696c72eaos.cloudax.dynamics.com/data/CustomerGroups";
-        public static string CustomerByGroupUrl = "https://dfmd365-435136c823696c72eaos.cloudax.dynamics.com/data/Customers?$filter=CustomerGroupId%20eq%20%27{0}%27";
-        public static string CustomerByIdUrl = "https://dfmd365-435136c823696c72eaos.cloudax.dynamics.com/data/Customers?$filter=CustomerAccount%20eq%20%27{0}%27";
-
-        public ODataService(IPrincipal user)
+        public ODataService(IPrincipal user, IOptions<ODataOptions> odataOptions)
         {
             this.user = user as ClaimsPrincipal;
-        }
+            this.odataOptions = odataOptions.Value;
+
+            customerGroupListUrl = this.odataOptions.BaseUrl + "/data/CustomerGroups";
+            customerByGroupUrl = this.odataOptions.BaseUrl + "/data/Customers?$filter=CustomerGroupId%20eq%20%27{0}%27";
+            customerByIdUrl = this.odataOptions.BaseUrl + "/data/Customers?$filter=CustomerAccount%20eq%20%27{0}%27";
+    }
 
         public async Task<List<CustomerGroup>> GetCustomerGroups()
         {
-            return await GetODataEntity<List<CustomerGroup>>(CustomerGroupListUrl);
+            return await GetODataEntity<List<CustomerGroup>>(customerGroupListUrl);
         }
 
         public async Task<List<Customer>> GetCustomersByGroup(string customerGroupId)
         {
-            return await GetODataEntity<List<Customer>>(string.Format(CustomerByGroupUrl, customerGroupId));
+            return await GetODataEntity<List<Customer>>(string.Format(customerByGroupUrl, customerGroupId));
         }
 
         public async Task<Customer> GetCustomersById(string customerAccount)
         {
-            var customerList = await GetODataEntity<List<Customer>>(string.Format(CustomerByIdUrl, customerAccount));
+            var customerList = await GetODataEntity<List<Customer>>(string.Format(customerByIdUrl, customerAccount));
 
             return customerList.FirstOrDefault();
         }
