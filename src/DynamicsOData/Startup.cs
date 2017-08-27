@@ -12,6 +12,7 @@ using DynamicsOData.Models;
 using DynamicsOData.Models.DynamicsEntities;
 using DynamicsOData.Services;
 using DynamicsOData.Models.Infrastructure;
+using NonFactors.Mvc.Grid;
 
 namespace DynamicsOData
 {
@@ -49,6 +50,7 @@ namespace DynamicsOData
                 .AddSignInManager<DynamicsSignInManager<ApplicationUser>>();
 
             services.AddMvc();
+            services.AddMvcGrid();
 
             // Add application services.
             services.Configure<ODataOptions>(this.Configuration.GetSection("ODataOptions"));

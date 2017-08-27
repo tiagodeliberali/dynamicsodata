@@ -1,10 +1,10 @@
-@model IEnumerable<DynamicsOData.Models.DynamicsEntities.CustomerGroup>
+@model IEnumerable<DynamicsOData.Models.DynamicsEntities.Customer>
 
 @{
-    ViewData["Title"] = "Customer Groups";
+    ViewData["Title"] = "Customers";
 }
 
-<h2>Customer Groups</h2>
+<h2>Customers</h2>
 
 @(Html
     .Grid(Model)
@@ -13,7 +13,7 @@
         columns.Add(model => model.DataAreaId).Titled("DataAreaId");
         columns.Add(model => model.CustomerGroupId).Titled("CustomerGroupId");
 
-        columns.Add(model => model.Description).Titled("Description");
+        columns.Add(model => model.Name).Titled("Name");
     })
     .Filterable()
     .Sortable()

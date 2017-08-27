@@ -27,7 +27,7 @@ namespace DynamicsOData.Services
             this.httpClient = httpClient;
 
             customerGroupUrl = this.odataOptions.BaseUrl + "/data/CustomerGroups";
-            customerUrl = this.odataOptions.BaseUrl + "/data/Customer";
+            customerUrl = this.odataOptions.BaseUrl + "/data/Customers";
             customerByGroupUrl = this.odataOptions.BaseUrl + customerUrl + "?$filter=CustomerGroupId%20eq%20%27{0}%27";
     }
 
