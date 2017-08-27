@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DynamicsOData.Models.DynamicsEntities
+﻿namespace DynamicsOData.Models.DynamicsEntities
 {
     public class ODataOptions
     {

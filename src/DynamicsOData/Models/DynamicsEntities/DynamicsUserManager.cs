@@ -70,27 +70,6 @@ namespace DynamicsOData.Models.DynamicsEntities
                     ConcurrencyStamp = authenticationResult.UserInfo.UniqueId
                 };
 
-                user.Claims.Add(new IdentityUserClaim<string>()
-                {
-                    ClaimType = ClaimTypes.Name,
-                    ClaimValue = user.UserName,
-                    UserId = user.Id
-                });
-
-                user.Claims.Add(new IdentityUserClaim<string>()
-                {
-                    ClaimType = ApplicationUser.AccessTokenClaimType,
-                    ClaimValue = authenticationResult.AccessToken,
-                    UserId = user.Id
-                });
-
-                user.Claims.Add(new IdentityUserClaim<string>()
-                {
-                    ClaimType = ClaimTypes.Role,
-                    ClaimValue = user.UserName,
-                    UserId = user.Id
-                });
-
                 user.Roles.Add(new IdentityUserRole<string>() { RoleId = "AxUser", UserId = user.Id });
 
                 var tuser = user as TUser;
