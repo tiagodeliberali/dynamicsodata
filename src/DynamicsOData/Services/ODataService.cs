@@ -1,15 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using DynamicsOData.Models;
+using DynamicsOData.Models.DynamicsEntities;
+using DynamicsOData.Models.Infrastructure;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using DynamicsOData.Models;
-using DynamicsOData.Models.DynamicsEntities;
-using Microsoft.Extensions.Options;
 
 namespace DynamicsOData.Services
 {
@@ -17,23 +14,26 @@ namespace DynamicsOData.Services
     {
         private ClaimsPrincipal user;
         private ODataOptions odataOptions;
-        private string customerGroupListUrl;
+        private IDynamicsHttpClient httpClient;
+        private string customerGroupUrl;
+        private string customerUrl;
         private string customerByGroupUrl;
         private string customerByIdUrl;
 
-        public ODataService(IPrincipal user, IOptions<ODataOptions> odataOptions)
+        public ODataService(IPrincipal user, IDynamicsHttpClient httpClient, IOptions<ODataOptions> odataOptions)
         {
             this.user = user as ClaimsPrincipal;
             this.odataOptions = odataOptions.Value;
+            this.httpClient = httpClient;
 
-            customerGroupListUrl = this.odataOptions.BaseUrl + "/data/CustomerGroups";
-            customerByGroupUrl = this.odataOptions.BaseUrl + "/data/Customers?$filter=CustomerGroupId%20eq%20%27{0}%27";
-            customerByIdUrl = this.odataOptions.BaseUrl + "/data/Customers?$filter=CustomerAccount%20eq%20%27{0}%27";
+            customerGroupUrl = this.odataOptions.BaseUrl + "/data/CustomerGroups";
+            customerUrl = this.odataOptions.BaseUrl + "/data/Customer";
+            customerByGroupUrl = this.odataOptions.BaseUrl + customerUrl + "?$filter=CustomerGroupId%20eq%20%27{0}%27";
     }
 
         public async Task<List<CustomerGroup>> GetCustomerGroups()
         {
-            return await GetODataEntity<List<CustomerGroup>>(customerGroupListUrl);
+            return await GetODataEntity<List<CustomerGroup>>(customerGroupUrl);
         }
 
         public async Task<List<Customer>> GetCustomersByGroup(string customerGroupId)
@@ -41,11 +41,9 @@ namespace DynamicsOData.Services
             return await GetODataEntity<List<Customer>>(string.Format(customerByGroupUrl, customerGroupId));
         }
 
-        public async Task<Customer> GetCustomersById(string customerAccount)
+        public async Task<List<Customer>> GetCustomers()
         {
-            var customerList = await GetODataEntity<List<Customer>>(string.Format(customerByIdUrl, customerAccount));
-
-            return customerList.FirstOrDefault();
+            return await GetODataEntity<List<Customer>>(customerUrl);
         }
 
         public async Task<T> GetODataEntity<T>(string url)
@@ -61,25 +59,7 @@ namespace DynamicsOData.Services
         {
             string accessToken = GetAccessToken();
 
-            HttpClient client = new HttpClient();
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-            HttpResponseMessage response = await client.SendAsync(request);
-
-            string responseString = "";
-            switch (response.StatusCode)
-            {
-                case HttpStatusCode.OK:
-                    responseString = await response.Content.ReadAsStringAsync();
-                    break;
-                case HttpStatusCode.Unauthorized:
-                    throw new ODataException($"Please sign in again. {response.ReasonPhrase}");
-                default:
-                    throw new ODataException($"Error calling API. StatusCode=${response.StatusCode}");
-            }
-
-            return responseString;
+            return await httpClient.GetStringFromUrl(url, accessToken);
         }
 
         private string GetAccessToken()

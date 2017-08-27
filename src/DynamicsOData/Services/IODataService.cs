@@ -8,6 +8,6 @@ namespace DynamicsOData.Services
     {
         Task<List<CustomerGroup>> GetCustomerGroups();
         Task<List<Customer>> GetCustomersByGroup(string customerGroupId);
-        Task<Customer> GetCustomersById(string customerAccount);
+        Task<List<Customer>> GetCustomers();
     }
 }

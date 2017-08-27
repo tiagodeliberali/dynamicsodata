@@ -11,6 +11,7 @@ using DynamicsOData.Data;
 using DynamicsOData.Models;
 using DynamicsOData.Models.DynamicsEntities;
 using DynamicsOData.Services;
+using DynamicsOData.Models.Infrastructure;
 
 namespace DynamicsOData
 {
@@ -54,6 +55,7 @@ namespace DynamicsOData
 
             services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
             services.AddTransient<IODataService, ODataService>();
+            services.AddTransient<IDynamicsHttpClient, DynamicsHttpClient>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
