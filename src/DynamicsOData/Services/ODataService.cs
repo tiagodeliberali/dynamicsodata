@@ -18,7 +18,6 @@ namespace DynamicsOData.Services
         private string customerGroupUrl;
         private string customerUrl;
         private string customerByGroupUrl;
-        private string customerByIdUrl;
 
         public ODataService(IPrincipal user, IDynamicsHttpClient httpClient, IOptions<ODataOptions> odataOptions)
         {

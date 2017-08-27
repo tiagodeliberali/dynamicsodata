@@ -89,7 +89,7 @@ namespace DynamicsOData
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=CustomerGroup}/{action=Index}/{id?}");
             });
         }
     }

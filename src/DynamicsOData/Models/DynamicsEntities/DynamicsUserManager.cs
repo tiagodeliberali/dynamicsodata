@@ -78,7 +78,7 @@ namespace DynamicsOData.Models.DynamicsEntities
 
                 return SignInResult.Success;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;
