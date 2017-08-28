@@ -15,15 +15,17 @@ namespace DynamicsOData.Services
         private ClaimsPrincipal user;
         private ODataOptions odataOptions;
         private IDynamicsHttpClient httpClient;
+        private ILockEntityService lockEntityService;
         private string customerGroupUrl;
         private string customerUrl;
         private string customerByGroupUrl;
 
-        public ODataService(IPrincipal user, IDynamicsHttpClient httpClient, IOptions<ODataOptions> odataOptions)
+        public ODataService(IPrincipal user, IDynamicsHttpClient httpClient, IOptions<ODataOptions> odataOptions, ILockEntityService lockEntityService)
         {
             this.user = user as ClaimsPrincipal;
             this.odataOptions = odataOptions.Value;
             this.httpClient = httpClient;
+            this.lockEntityService = lockEntityService;
 
             BuildUrls();
         }
@@ -62,16 +64,18 @@ namespace DynamicsOData.Services
 
         public async Task UpdateCustomerGroup(CustomerGroup group)
         {
-            await UpdateEntity<CustomerGroup>(group, customerGroupUrl);
+            await UpdateEntity<CustomerGroup>(group, customerGroupUrl, group.CustomerGroupId);
         }
 
         public async Task UpdateCustomer(Customer customer)
         {
-            await UpdateEntity<Customer>(customer, customerUrl);
+            await UpdateEntity<Customer>(customer, customerUrl, customer.CustomerAccount);
         }
 
-        private async Task UpdateEntity<T>(T entity, string url)
+        private async Task UpdateEntity<T>(T entity, string url, string entityId)
         {
+            await lockEntityService.CheckLock<T>(entityId, user.Identity.Name);
+
             var odataEntity = new OData<T>()
             {
                 Value = entity

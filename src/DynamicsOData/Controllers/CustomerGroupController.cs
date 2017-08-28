@@ -5,6 +5,7 @@ using DynamicsOData.Services;
 using DynamicsOData.Models.CustomerGroupViewModel;
 using DynamicsOData.Models.DynamicsEntities;
 using System.Linq;
+using DynamicsOData.Models;
 
 namespace DynamicsOData.Controllers
 {
@@ -41,16 +42,30 @@ namespace DynamicsOData.Controllers
 
         public async Task<JsonResult> RequestLock(string id)
         {
-            bool locked = await lockEntityService.RequestLock("CustomerGroup", id, User.Identity.Name);
+            try
+            {
+                await lockEntityService.RequestLock<CustomerGroup>(id, User.Identity.Name);
 
-            return Json(locked);
+                return Json(true);
+            }
+            catch (LockEntityException)
+            {
+                return Json(false);
+            }
         }
 
         public async Task<JsonResult> ReleaseLock(string id)
         {
-            await lockEntityService.ReleaseLock("CustomerGroup", id, User.Identity.Name);
+            try
+            {
+                await lockEntityService.ReleaseLock<CustomerGroup>(id, User.Identity.Name);
 
-            return Json(true);
+                return Json(true);
+            }
+            catch (LockEntityException)
+            {
+                return Json(false);
+            }
         }
     }
 }

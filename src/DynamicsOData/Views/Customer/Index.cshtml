@@ -85,7 +85,12 @@
 
         function releaseLock(id) {
             $.post("/Customer/ReleaseLock/@(Model.CustomerAccount)", function (data) {
-                location.reload();
+                if (data == false) {
+                    alert('This entity is locked by other user.');
+                }
+                else {
+                    location.reload();
+                }
             });
         }
 </script>

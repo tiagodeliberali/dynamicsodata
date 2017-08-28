@@ -16,18 +16,18 @@ namespace DynamicsOData.Services
             this.db = db;
         }
 
-        public async Task ReleaseLock(string entityName, string entityId, string userId)
+        public async Task CheckLock<T>(string entityId, string userId)
         {
-            var entityLock = await db.LockEntities.FirstOrDefaultAsync(x => x.EntityName == entityName && x.EntityId == entityId);
+            await GetValidLockEntity<T>(entityId, userId);
+        }
+
+        public async Task ReleaseLock<T>(string entityId, string userId)
+        {
+            var entityLock = await GetValidLockEntity<T>(entityId, userId);
 
             if (entityLock == null)
             {
                 return;
-            }
-
-            if (entityLock.IsLocked && entityLock.LastUserId != userId)
-            {
-                throw new LockEntityException($"Entity locked to another user: '{entityLock.LastUserId}'");
             }
 
             entityLock.IsLocked = false;
@@ -35,46 +35,46 @@ namespace DynamicsOData.Services
             await db.SaveChangesAsync();
         }
 
-        public async Task<bool> RequestLock(string entityName, string entityId, string userId)
+        public async Task RequestLock<T>(string entityId, string userId)
         {
-            var isLocked = false;
-
-            var entityLock = await db.LockEntities.FirstOrDefaultAsync(x => x.EntityName == entityName && x.EntityId == entityId);
+            var entityLock = await GetValidLockEntity<T>(entityId, userId);
 
             if (entityLock == null)
             {
                 entityLock = new LockEntity()
                 {
                     EntityId = entityId,
-                    EntityName = entityName,
+                    EntityName = typeof(T).Name,
                     IsLocked = true,
                     LastUserId = userId,
                     LastLockTime = DateTime.UtcNow
                 };
 
                 db.Add(entityLock);
-
-                isLocked = true;
             }
-            else if (entityLock.LastUserId == userId)
-            {
-                isLocked = true;
-            }
-            else if (!entityLock.IsLocked)
+            else
             {
                 entityLock.IsLocked = true;
                 entityLock.LastUserId = userId;
                 entityLock.LastLockTime = DateTime.UtcNow;
-
-                isLocked = true;
-            }
-            else
-            {
-                isLocked = false;
             }
 
             await db.SaveChangesAsync();
-            return isLocked;
+        }
+
+        private async Task<LockEntity> GetValidLockEntity<T>(string entityId, string userId)
+        {
+            var entityLock = await db.LockEntities.FirstOrDefaultAsync(x => x.EntityName == typeof(T).Name && x.EntityId == entityId);
+
+            if (IsLockedToAnotherUser(userId, entityLock))
+                throw new LockEntityException($"Entity locked to another user: '{entityLock.LastUserId}'");
+
+            return entityLock;
+        }
+
+        private bool IsLockedToAnotherUser(string userId, LockEntity entityLock)
+        {
+            return entityLock != null && entityLock.IsLocked && entityLock.LastUserId != userId && entityLock.LastLockTime < DateTime.UtcNow.AddMinutes(30);
         }
     }
 }

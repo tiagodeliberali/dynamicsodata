@@ -1,3 +1,4 @@
+using DynamicsOData.Models;
 using DynamicsOData.Models.CustomerViewModel;
 using DynamicsOData.Models.DynamicsEntities;
 using DynamicsOData.Services;
@@ -49,16 +50,30 @@ namespace DynamicsOData.Controllers
 
         public async Task<JsonResult> RequestLock(string id)
         {
-            bool locked = await lockEntityService.RequestLock("Customer", id, User.Identity.Name);
+            try
+            {
+                await lockEntityService.RequestLock<Customer>(id, User.Identity.Name);
 
-            return Json(locked);
+                return Json(true);
+            }
+            catch (LockEntityException)
+            {
+                return Json(false);
+            }
         }
 
         public async Task<JsonResult> ReleaseLock(string id)
         {
-            await lockEntityService.ReleaseLock("Customer", id, User.Identity.Name);
+            try
+            {
+                await lockEntityService.ReleaseLock<Customer>(id, User.Identity.Name);
 
-            return Json(true);
+                return Json(true);
+            }
+            catch (LockEntityException)
+            {
+                return Json(false);
+            }
         }
     }
 }
