@@ -1,5 +1,5 @@
-Proposed architecture
-=====================
+Solution details
+================
 
 ## Dynamics 365 communication
 
