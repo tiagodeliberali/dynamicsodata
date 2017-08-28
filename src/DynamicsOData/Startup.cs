@@ -59,8 +59,6 @@ namespace DynamicsOData
             services.AddTransient<IODataService, ODataService>();
             services.AddTransient<ILockEntityService, LockEntityService>();
             services.AddTransient<IDynamicsHttpClient, DynamicsHttpClient>();
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
