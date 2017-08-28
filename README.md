@@ -19,7 +19,7 @@ Due to time constrains, it was adopted a solution based on razor and jQuery.
 
 To keep clients updated regarding to locks, it is possible to rely on a socket techonology. allowing the customers to receive a notification when a entity previously locked were released.
 
-## Branching strategy
+## Branching strategy (not implemented)
 
 The use of Microsoft Extensibility Framework (MEF) allow us to have a main solution and a different implementation for different customers. 
 
