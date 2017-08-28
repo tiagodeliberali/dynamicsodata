@@ -28,7 +28,7 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string PaymentMethod { get; set; }
         public string IsExcludedFromCollectionFeeCalculation { get; set; }
         public string SiteId { get; set; }
-        public int AddressLatitude { get; set; }
+        public int? AddressLatitude { get; set; }
         public string AddressZipCode { get; set; }
         public string PANReferenceNumber { get; set; }
         public string DeliveryAddressDescription { get; set; }
@@ -38,7 +38,7 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string PrimaryContactPhoneExtension { get; set; }
         public string InvoiceAddressLocationId { get; set; }
         public string AddressBrazilianIE { get; set; }
-        public int PersonAnniversaryDay { get; set; }
+        public int? PersonAnniversaryDay { get; set; }
         public string CreditCardAddressVerification { get; set; }
         public string PersonProfessionalTitle { get; set; }
         public string GiroType { get; set; }
@@ -48,14 +48,14 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string InvoiceAddressDescription { get; set; }
         public string HasSuframaDiscountPISandCOFINS { get; set; }
         public string AddressLocationId { get; set; }
-        public int WarehouseFulfillmentRate { get; set; }
+        public int? WarehouseFulfillmentRate { get; set; }
         public string FederalComments { get; set; }
-        public int InvoiceAddressLatitude { get; set; }
+        public int? InvoiceAddressLatitude { get; set; }
         public string CustomerPaymentFinancialInterestCode { get; set; }
         public string PrimaryContactTelexDescription { get; set; }
         public string SalesCurrencyCode { get; set; }
         public string BrazilianCCM { get; set; }
-        public DateTime InvoiceAddressValidFrom { get; set; }
+        public DateTime? InvoiceAddressValidFrom { get; set; }
         public string IsICMSContributor { get; set; }
         public string PaymentSchedule { get; set; }
         public string LineOfBusinessId { get; set; }
@@ -72,11 +72,11 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string PersonAnniversaryMonth { get; set; }
         public string CURPNumber { get; set; }
         public string OrderEntryDeadline { get; set; }
-        public int DeliveryAddressLatitude { get; set; }
+        public int? DeliveryAddressLatitude { get; set; }
         public string DeliveryAddressCity { get; set; }
         public string PaymentCashDiscount { get; set; }
         public string PrimaryContactFax { get; set; }
-        public DateTime DeliveryAddressValidFrom { get; set; }
+        public DateTime? DeliveryAddressValidFrom { get; set; }
         public string AddressStreet { get; set; }
         public string ResidenceForeignCountryRegionId { get; set; }
         public string InvoiceAddressCounty { get; set; }
@@ -85,8 +85,8 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string DeliveryMode { get; set; }
         public string IsRFIDCaseTaggingEnabled { get; set; }
         public string PrimaryContactPhoneIsMobile { get; set; }
-        public DateTime InvoiceAddressValidTo { get; set; }
-        public DateTime AddressValidTo { get; set; }
+        public DateTime? InvoiceAddressValidTo { get; set; }
+        public DateTime? AddressValidTo { get; set; }
         public string DeliveryAddressDistrictName { get; set; }
         public string DefaultInventoryStatusId { get; set; }
         public string PaymentDay { get; set; }
@@ -117,13 +117,13 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string InvoiceAddressCountryRegionId { get; set; }
         public string ForeignCustomer { get; set; }
         public string FiscalCode { get; set; }
-        public DateTime DeliveryAddressValidTo { get; set; }
+        public DateTime? DeliveryAddressValidTo { get; set; }
         public string GiroTypeAccountStatement { get; set; }
         public string PrimaryContactTwitterPurpose { get; set; }
         public string OrganizationABCCode { get; set; }
-        public int CreditLimit { get; set; }
+        public int? CreditLimit { get; set; }
         public string WarehouseFulfillmentType { get; set; }
-        public int OrganizationNumberOfEmployees { get; set; }
+        public int? OrganizationNumberOfEmployees { get; set; }
         public string PaymentUseCashDiscount { get; set; }
         public string CreditLimitIsMandatory { get; set; }
         public string ElectronicInvoiceEAN { get; set; }
@@ -144,7 +144,7 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string DeliveryAddressCountryRegionISOCode { get; set; }
         public string TaxRegistrationId { get; set; }
         public string PersonPhoneticFirstName { get; set; }
-        public int PersonAnniversaryYear { get; set; }
+        public int? PersonAnniversaryYear { get; set; }
         public string PrimaryContactTwitterDescription { get; set; }
         public string InvoiceAddressCountryRegionISOCode { get; set; }
         public string TDSGroup { get; set; }
@@ -157,7 +157,7 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string PrimaryContactEmailPurpose { get; set; }
         public string FullPrimaryAddress { get; set; }
         public string CompanyChain { get; set; }
-        public DateTime AddressValidFrom { get; set; }
+        public DateTime? AddressValidFrom { get; set; }
         public string PrimaryContactURLPurpose { get; set; }
         public string CustomerGroupId { get; set; }
         public string DeliveryAddressCounty { get; set; }
@@ -178,7 +178,7 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string WarehouseIsASNGenerated { get; set; }
         public string FederalAgencyLocationCode { get; set; }
         public string CompanyType { get; set; }
-        public int InvoiceAddressLongitude { get; set; }
+        public int? InvoiceAddressLongitude { get; set; }
         public string Name { get; set; }
         public string ReliefGroupId { get; set; }
         public string FrenchSiret { get; set; }
@@ -209,7 +209,7 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string PANNumber { get; set; }
         public string PrimaryContactPhone { get; set; }
         public string IsElectronicInvoice { get; set; }
-        public int DeliveryAddressLongitude { get; set; }
+        public int? DeliveryAddressLongitude { get; set; }
         public string SalesDistrict { get; set; }
         public string PrimaryContactEmailDescription { get; set; }
         public string IsInSuframaRegion { get; set; }
@@ -224,7 +224,7 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string TotalDiscountCode { get; set; }
         public string PrimaryContactEmail { get; set; }
         public string PaymentFactoringAccount { get; set; }
-        public int AddressLongitude { get; set; }
+        public int? AddressLongitude { get; set; }
         public string CentralBankPurposeCode { get; set; }
         public string OrganizationNumber { get; set; }
         public string BrazilianIE { get; set; }
@@ -240,7 +240,7 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string StateInscription { get; set; }
         public string StatisticsGroupId { get; set; }
         public string SalesSubsegmentId { get; set; }
-        public int PaymentTermsBaseDays { get; set; }
+        public int? PaymentTermsBaseDays { get; set; }
         public string CustomerPaymentFineCode { get; set; }
         public string PrimaryContactFaxPurpose { get; set; }
         public string KnownAs { get; set; }
@@ -258,7 +258,7 @@ namespace DynamicsOData.Models.DynamicsEntities
         public string GiroTypeInterestNote { get; set; }
         public string PaymentSpecification { get; set; }
         public string WithholdingTaxGroupCode { get; set; }
-        public int ConsolidationDay { get; set; }
+        public int? ConsolidationDay { get; set; }
         public string DeliveryTerms { get; set; }
         public string AccountStatement { get; set; }
         public string ElectronicLocationId { get; set; }

@@ -58,10 +58,6 @@
             <label for="BrazilianCNPJOrCPF">BrazilianCNPJOrCPF</label>
             <input type="text" class="form-control" id="BrazilianCNPJOrCPF" name="BrazilianCNPJOrCPF" placeholder="BrazilianCNPJOrCPF" value="@customer.BrazilianCNPJOrCPF" disabled>
         </div>
-        <div class="form-group">
-            <label for="FullPrimaryAddress">FullPrimaryAddress</label>
-            <input type="text" class="form-control" id="FullPrimaryAddress" name="FullPrimaryAddress" placeholder="FullPrimaryAddress" value="@customer.FullPrimaryAddress" disabled>
-        </div>
         <button type="submit" class="btn btn-default" disabled>Submit</button>
         <button type="button" class="btn btn-danger" onclick="releaseLock('@(Model.CustomerAccount)')" disabled>Cancel</button>
     </form>

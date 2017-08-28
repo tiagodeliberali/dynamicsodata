@@ -85,6 +85,12 @@ namespace DynamicsOData.Services
             var result = await httpClient.PathToUrl(url, GetAccessToken(), serializedEntity);
 
             await lockEntityService.ReleaseLock<T>(entityId, user.Identity.Name);
+
+            if (!result.IsSuccessStatusCode)
+            {
+                var errorMessage = await result.Content.ReadAsStringAsync();
+                throw new ODataException(errorMessage);
+            }
         }
 
         private async Task<string> RequestODataString(string url)
