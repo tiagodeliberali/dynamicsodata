@@ -29,5 +29,17 @@ namespace DynamicsOData.Models.Infrastructure
 
             return responseString;
         }
+
+        public async Task<HttpResponseMessage> PostToUrl(string url, string accessToken, string serializedEntity)
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var content = new StringContent(serializedEntity);
+
+            HttpResponseMessage response = await client.PostAsync(url, content);
+
+            return response;
+        }
     }
 }

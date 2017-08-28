@@ -30,42 +30,58 @@
     <h3>Customer Group details for '@Model.CustomerGroupId'</h3>
     <div>
         <a href="/CustomerGroup/Create">Create</a> |
-        <a href="/CustomerGroup/Edit/@(Model.CustomerGroupId)">Edit</a> |
+        <a href="#" onclick="requestLock('@(Model.CustomerGroupId)')">Edit</a> |
         <a href="/CustomerGroup/Delete/@(Model.CustomerGroupId)">Delete</a>
     </div>
     <br />
-    <div>
+    <form action="/CustomerGroup/Edit" method="post">
+        <input type="hidden" id="CustomerGroupId" name="CustomerGroupId" value="@(Model.CustomerGroupId)" />
         <div class="form-group">
-            <b>Description</b>
-            <br />
-            <span>@group.Description</span>
+            <label for="Description">Description</label>
+            <input type="text" class="form-control" id="Description" name="Description" placeholder="Description" value="@group.Description" disabled>
         </div>
         <div class="form-group">
-            <b>IsSalesTaxIncludedInPrice</b>
-            <br />
-            <span>@group.IsSalesTaxIncludedInPrice</span>
+            <label for="IsSalesTaxIncludedInPrice">IsSalesTaxIncludedInPrice</label>
+            <input type="text" class="form-control" id="IsSalesTaxIncludedInPrice" name="IsSalesTaxIncludedInPrice" placeholder="IsSalesTaxIncludedInPrice" value="@group.IsSalesTaxIncludedInPrice" disabled>
         </div>
         <div class="form-group">
-            <b>PaymentTermId</b>
-            <br />
-            <span>@(string.IsNullOrEmpty(group.PaymentTermId) ? "<empty>" : group.PaymentTermId)</span>
+            <label for="IsSalesTaxIncludedInPrice">IsSalesTaxIncludedInPrice</label>
+            <input type="text" class="form-control" id="IsSalesTaxIncludedInPrice" name="IsSalesTaxIncludedInPrice" placeholder="IsSalesTaxIncludedInPrice" value="@group.IsSalesTaxIncludedInPrice" disabled>
         </div>
         <div class="form-group">
-            <b>TaxGroupId</b>
-            <br />
-            <span>@(string.IsNullOrEmpty(group.TaxGroupId) ? "<empty>" : group.TaxGroupId)</span>
+            <label for="PaymentTermId">PaymentTermId</label>
+            <input type="text" class="form-control" id="PaymentTermId" name="PaymentTermId" placeholder="PaymentTermId" value="@group.PaymentTermId" disabled>
         </div>
         <div class="form-group">
-            <b>DefaultDimensionDisplayValue</b>
-            <br />
-            <span>@(string.IsNullOrEmpty(group.DefaultDimensionDisplayValue) ? "<empty>" : group.DefaultDimensionDisplayValue)</span>
+            <label for="TaxGroupId">TaxGroupId</label>
+            <input type="text" class="form-control" id="TaxGroupId" name="TaxGroupId" placeholder="TaxGroupId" value="@group.TaxGroupId" disabled>
         </div>
-    </div>
+        <button type="submit" class="btn btn-default" disabled>Submit</button>
+        <button type="button" class="btn btn-danger" onclick="releaseLock('@(Model.CustomerGroupId)')" disabled>Cancel</button>
+    </form>
 }
 
 @section Scripts {
     <script src="~/js/mvc-grid.js"></script>
     <script>
         $('.mvc-grid').mvcgrid();
+
+        function requestLock(id) {
+            $.post("/CustomerGroup/RequestLock/@(Model.CustomerGroupId)", function (data) {
+                if (data == false) {
+                    alert('This entity is already locked.');
+                }
+                else {
+                    $("input[type=text]").prop('disabled', false);
+                    $("button").prop('disabled', false);
+                }
+            });
+        }
+
+        function releaseLock(id) {
+            $.post("/CustomerGroup/ReleaseLock/@(Model.CustomerGroupId)", function (data) {
+                location.reload();
+            });
+        }
     </script>
 }

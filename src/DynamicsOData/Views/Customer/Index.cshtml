@@ -35,42 +35,58 @@
     <h3>Customer details for '@Model.CustomerAccount'</h3>
     <div>
         <a href="/Customer/Create">Create</a> |
-        <a href="/Customer/Edit/@(Model.CustomerAccount)">Edit</a> |
+        <a href="#" onclick="requestLock('@(Model.CustomerAccount)')">Edit</a> |
         <a href="/Customer/Delete/@(Model.CustomerAccount)">Delete</a>
     </div>
     <br />
-    <div>
+    <form action="/Customer/Edit" method="post">
+        <input type="hidden" id="CustomerAccount" name="CustomerAccount" value="@(Model.CustomerAccount)" />
         <div class="form-group">
-            <b>Name</b>
-            <br />
-            <span>@customer.Name</span>
+            <label for="Name">Name</label>
+            <input type="text" class="form-control" id="Name" name="Name" placeholder="Name" value="@customer.Name" disabled>
         </div>
         <div class="form-group">
-            <b>CustomerGroupId</b>
-            <br />
-            <span>@customer.CustomerGroupId</span>
+            <label for="CustomerGroupId">CustomerGroupId</label>
+            <input type="text" class="form-control" id="CustomerGroupId" name="CustomerGroupId" placeholder="CustomerGroupId" value="@customer.CustomerGroupId" disabled>
         </div>
         <div class="form-group">
-            <b>BrazilianIE</b>
-            <br />
-            <span>@customer.BrazilianIE</span>
+            <label for="BrazilianIE">BrazilianIE</label>
+            <input type="text" class="form-control" id="BrazilianIE" name="BrazilianIE" placeholder="BrazilianIE" value="@customer.BrazilianIE" disabled>
         </div>
         <div class="form-group">
-            <b>BrazilianCNPJOrCPF</b>
-            <br />
-            <span>@customer.BrazilianCNPJOrCPF</span>
+            <label for="BrazilianCNPJOrCPF">BrazilianCNPJOrCPF</label>
+            <input type="text" class="form-control" id="BrazilianCNPJOrCPF" name="BrazilianCNPJOrCPF" placeholder="BrazilianCNPJOrCPF" value="@customer.BrazilianCNPJOrCPF" disabled>
         </div>
         <div class="form-group">
-            <b>Address</b>
-            <br />
-            <span>@customer.FullPrimaryAddress</span>
+            <label for="FullPrimaryAddress">FullPrimaryAddress</label>
+            <input type="text" class="form-control" id="FullPrimaryAddress" name="FullPrimaryAddress" placeholder="FullPrimaryAddress" value="@customer.FullPrimaryAddress" disabled>
         </div>
-    </div>
+        <button type="submit" class="btn btn-default" disabled>Submit</button>
+        <button type="button" class="btn btn-danger" onclick="releaseLock('@(Model.CustomerGroupId)')" disabled>Cancel</button>
+    </form>
 }
 
 @section Scripts {
     <script src="~/js/mvc-grid.js"></script>
     <script>
         $('.mvc-grid').mvcgrid();
-    </script>
+
+        function requestLock(id) {
+            $.post("/Customer/RequestLock/@(Model.CustomerAccount)", function (data) {
+                if (data == false) {
+                    alert('This entity is already locked.');
+                }
+                else {
+                    $("input[type=text]").prop('disabled', false);
+                    $("button").prop('disabled', false);
+                }
+            });
+        }
+
+        function releaseLock(id) {
+            $.post("/Customer/ReleaseLock/@(Model.CustomerAccount)", function (data) {
+                location.reload();
+            });
+        }
+</script>
 }

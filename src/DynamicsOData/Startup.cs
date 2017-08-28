@@ -57,6 +57,7 @@ namespace DynamicsOData
 
             services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
             services.AddTransient<IODataService, ODataService>();
+            services.AddTransient<ILockEntityService, LockEntityService>();
             services.AddTransient<IDynamicsHttpClient, DynamicsHttpClient>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();

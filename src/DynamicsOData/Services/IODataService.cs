@@ -9,5 +9,7 @@ namespace DynamicsOData.Services
         Task<List<CustomerGroup>> GetCustomerGroups();
         Task<List<Customer>> GetCustomersByGroup(string customerGroupId);
         Task<List<Customer>> GetCustomers();
+        Task UpdateCustomerGroup(CustomerGroup group);
+        Task UpdateCustomer(Customer customer);
     }
 }

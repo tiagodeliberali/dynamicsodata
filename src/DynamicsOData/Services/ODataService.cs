@@ -60,6 +60,28 @@ namespace DynamicsOData.Services
             return resultObject.Value;
         }
 
+        public async Task UpdateCustomerGroup(CustomerGroup group)
+        {
+            await UpdateEntity<CustomerGroup>(group, customerGroupUrl);
+        }
+
+        public async Task UpdateCustomer(Customer customer)
+        {
+            await UpdateEntity<Customer>(customer, customerUrl);
+        }
+
+        private async Task UpdateEntity<T>(T entity, string url)
+        {
+            var odataEntity = new OData<T>()
+            {
+                Value = entity
+            };
+
+            var serializedEntity = JsonConvert.SerializeObject(odataEntity, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
+            var result = await httpClient.PostToUrl(url, GetAccessToken(), serializedEntity);
+        }
+
         private async Task<string> RequestODataString(string url)
         {
             string accessToken = GetAccessToken();
