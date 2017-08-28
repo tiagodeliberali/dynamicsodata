@@ -26,3 +26,15 @@ The use of Microsoft Extensibility Framework (MEF) allow us to have a main solut
 Depending on the customization necessities, it is possible to implement a extension interface with before/after actions on the system and use MVC action filters to implement the behaviours imported through MEF.
 
 If the branching strategy is related to front end customizations, the solution can be even easier, with replacement of some base html/css files during the solution deployment.
+
+
+## References
+
+Basic OData info on Dynamics 365 for Finance and Operations, Enterprise edition
+[https://docs.microsoft.com/en-us/dynamics365/unified-operations/dev-itpro/data-entities/odata?toc=dynamics365/unified-operations/fin-and-ops/toc.json]
+
+How to consume the OData endpoints
+[https://community.dynamics.com/crm/b/scaleablesolutionsblog/archive/2016/01/18/crud-operations-using-web-api]
+
+UserPasswordCredential doesn't support .NET Core
+[https://github.com/AzureAD/azure-activedirectory-library-for-dotnet/issues/482]
