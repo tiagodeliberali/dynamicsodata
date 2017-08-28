@@ -36,6 +36,7 @@
     <br />
     <form action="/CustomerGroup/Edit" method="post">
         <input type="hidden" id="CustomerGroupId" name="CustomerGroupId" value="@(Model.CustomerGroupId)" />
+        <input type="hidden" id="DataAreaId" name="DataAreaId" value="@(Model.Groups.First(x => x.CustomerGroupId == Model.CustomerGroupId).DataAreaId)" />
         <div class="form-group">
             <label for="Description">Description</label>
             <input type="text" class="form-control" id="Description" name="Description" placeholder="Description" value="@group.Description" disabled>

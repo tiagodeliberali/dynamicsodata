@@ -64,26 +64,27 @@ namespace DynamicsOData.Services
 
         public async Task UpdateCustomerGroup(CustomerGroup group)
         {
-            await UpdateEntity<CustomerGroup>(group, customerGroupUrl, group.CustomerGroupId);
+            var url = $"{customerGroupUrl}(CustomerGroupId='{group.CustomerGroupId}',dataAreaId='{group.DataAreaId}')";
+
+            await UpdateEntity<CustomerGroup>(group, url, group.CustomerGroupId);
         }
 
         public async Task UpdateCustomer(Customer customer)
         {
-            await UpdateEntity<Customer>(customer, customerUrl, customer.CustomerAccount);
+            var url = $"{customerUrl}(CustomerAccount='{customer.CustomerAccount}',dataAreaId='{customer.DataAreaId}')";
+
+            await UpdateEntity<Customer>(customer, url, customer.CustomerAccount);
         }
 
         private async Task UpdateEntity<T>(T entity, string url, string entityId)
         {
             await lockEntityService.CheckLock<T>(entityId, user.Identity.Name);
 
-            var odataEntity = new OData<T>()
-            {
-                Value = entity
-            };
+            var serializedEntity = JsonConvert.SerializeObject(entity, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
-            var serializedEntity = JsonConvert.SerializeObject(odataEntity, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var result = await httpClient.PathToUrl(url, GetAccessToken(), serializedEntity);
 
-            var result = await httpClient.PostToUrl(url, GetAccessToken(), serializedEntity);
+            await lockEntityService.ReleaseLock<T>(entityId, user.Identity.Name);
         }
 
         private async Task<string> RequestODataString(string url)

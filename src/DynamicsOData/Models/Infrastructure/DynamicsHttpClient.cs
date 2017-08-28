@@ -1,6 +1,8 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DynamicsOData.Models.Infrastructure
@@ -30,14 +32,21 @@ namespace DynamicsOData.Models.Infrastructure
             return responseString;
         }
 
-        public async Task<HttpResponseMessage> PostToUrl(string url, string accessToken, string serializedEntity)
+        public async Task<HttpResponseMessage> PathToUrl(string url, string accessToken, string serializedEntity)
         {
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var content = new StringContent(serializedEntity);
+            HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
 
-            HttpResponseMessage response = await client.PostAsync(url, content);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            request.Headers.Add("OData-MaxVersion", "4.0");
+            request.Headers.Add("OData-Version", "4.0");
+
+            request.Content = new StringContent(serializedEntity, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.SendAsync(request);
 
             return response;
         }

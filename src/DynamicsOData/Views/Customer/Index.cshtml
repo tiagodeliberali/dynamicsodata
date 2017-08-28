@@ -41,6 +41,7 @@
     <br />
     <form action="/Customer/Edit" method="post">
         <input type="hidden" id="CustomerAccount" name="CustomerAccount" value="@(Model.CustomerAccount)" />
+        <input type="hidden" id="DataAreaId" name="DataAreaId" value="@(Model.Customers.First(x => x.CustomerAccount == Model.CustomerAccount).DataAreaId)" />
         <div class="form-group">
             <label for="Name">Name</label>
             <input type="text" class="form-control" id="Name" name="Name" placeholder="Name" value="@customer.Name" disabled>
@@ -62,7 +63,7 @@
             <input type="text" class="form-control" id="FullPrimaryAddress" name="FullPrimaryAddress" placeholder="FullPrimaryAddress" value="@customer.FullPrimaryAddress" disabled>
         </div>
         <button type="submit" class="btn btn-default" disabled>Submit</button>
-        <button type="button" class="btn btn-danger" onclick="releaseLock('@(Model.CustomerGroupId)')" disabled>Cancel</button>
+        <button type="button" class="btn btn-danger" onclick="releaseLock('@(Model.CustomerAccount)')" disabled>Cancel</button>
     </form>
 }
 

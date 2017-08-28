@@ -1,11 +1,10 @@
+using DynamicsOData.Models;
+using DynamicsOData.Models.CustomerGroupViewModel;
+using DynamicsOData.Models.DynamicsEntities;
+using DynamicsOData.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using DynamicsOData.Services;
-using DynamicsOData.Models.CustomerGroupViewModel;
-using DynamicsOData.Models.DynamicsEntities;
-using System.Linq;
-using DynamicsOData.Models;
 
 namespace DynamicsOData.Controllers
 {
