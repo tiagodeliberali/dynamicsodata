@@ -1,3 +1,4 @@
+using DynamicsOData.Models.CustomerViewModel;
 using DynamicsOData.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,24 @@ namespace DynamicsOData.Controllers
             this.odataService = odataService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string customerGroupId, string customerAccount)
         {
-            var groups = await odataService.GetCustomers();
+            var model = new IndexCustomerViewModel
+            {
+                CustomerGroupId = customerGroupId,
+                CustomerAccount = customerAccount
+            };
 
-            return View(groups);
+            if (string.IsNullOrEmpty(customerGroupId))
+            {
+                model.Customers = await odataService.GetCustomers();
+            }
+            else
+            {
+                model.Customers = await odataService.GetCustomersByGroup(customerGroupId);
+            }
+
+            return View(model);
         }
     }
 }

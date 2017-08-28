@@ -1,25 +1,72 @@
-@model IEnumerable<DynamicsOData.Models.DynamicsEntities.Customer>
+@model DynamicsOData.Models.CustomerViewModel.IndexCustomerViewModel
 
 @{
-    ViewData["Title"] = "Customers";
+    string filteredInformation = string.IsNullOrEmpty(Model.CustomerGroupId) ? "" : $" for customer group '{Model.CustomerGroupId}'";
+    ViewData["Title"] = "Customers" + filteredInformation;
 }
 
-<h2>Customers</h2>
+<h2>@ViewData["Title"]</h2>
+
+@if (!string.IsNullOrEmpty(Model.CustomerGroupId))
+{
+    <a href="/CustomerGroup/Index?CustomerGroupId=@(Model.CustomerGroupId)">Back</a>
+}
 
 @(Html
-    .Grid(Model)
+    .Grid(Model.Customers)
     .Build(columns =>
     {
         columns.Add(model => model.DataAreaId).Titled("DataAreaId");
         columns.Add(model => model.CustomerGroupId).Titled("CustomerGroupId");
-
         columns.Add(model => model.Name).Titled("Name");
+
+        columns.Add(model => $"<a href='/Customer/Index?CustomerGroupId={model.CustomerGroupId}&customerAccount={model.CustomerAccount}'>Select</a>").Titled("").Encoded(false);
     })
+    .RowCss(model => model.CustomerAccount == Model.CustomerAccount ? "info" : "")
     .Filterable()
     .Sortable()
     .Pageable()
 )
 
+@if (!string.IsNullOrEmpty(Model.CustomerAccount))
+{
+    var customer = Model.Customers.FirstOrDefault(x => x.CustomerAccount == Model.CustomerAccount);
+
+    <h3>Customer details for '@Model.CustomerAccount'</h3>
+    <div>
+        <a href="/Customer/Create">Create</a> |
+        <a href="/Customer/Edit/@(Model.CustomerAccount)">Edit</a> |
+        <a href="/Customer/Delete/@(Model.CustomerAccount)">Delete</a>
+    </div>
+    <br />
+    <div>
+        <div class="form-group">
+            <b>Name</b>
+            <br />
+            <span>@customer.Name</span>
+        </div>
+        <div class="form-group">
+            <b>CustomerGroupId</b>
+            <br />
+            <span>@customer.CustomerGroupId</span>
+        </div>
+        <div class="form-group">
+            <b>BrazilianIE</b>
+            <br />
+            <span>@customer.BrazilianIE</span>
+        </div>
+        <div class="form-group">
+            <b>BrazilianCNPJOrCPF</b>
+            <br />
+            <span>@customer.BrazilianCNPJOrCPF</span>
+        </div>
+        <div class="form-group">
+            <b>Address</b>
+            <br />
+            <span>@customer.FullPrimaryAddress</span>
+        </div>
+    </div>
+}
 
 @section Scripts {
     <script src="~/js/mvc-grid.js"></script>

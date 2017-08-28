@@ -1,25 +1,67 @@
-@model IEnumerable<DynamicsOData.Models.DynamicsEntities.CustomerGroup>
+@model DynamicsOData.Models.CustomerGroupViewModel.IndexCustomerGroupViewModel
 
 @{
     ViewData["Title"] = "Customer Groups";
 }
 
-<h2>Customer Groups</h2>
+<h2>@ViewData["Title"]</h2>
 
 @(Html
-    .Grid(Model)
+    .Grid(Model.Groups)
     .Build(columns =>
     {
         columns.Add(model => model.DataAreaId).Titled("DataAreaId");
         columns.Add(model => model.CustomerGroupId).Titled("CustomerGroupId");
-
         columns.Add(model => model.Description).Titled("Description");
+
+        columns.Add(model => $"<a href='/CustomerGroup/Index?CustomerGroupId={model.CustomerGroupId}'>Select</a>").Titled("").Encoded(false);
+        columns.Add(model => $"<a href='/Customer/Index?CustomerGroupId={model.CustomerGroupId}'>Customers</a>").Titled("").Encoded(false);
     })
+    .RowCss(model => model.CustomerGroupId == Model.CustomerGroupId ? "info" : "")
     .Filterable()
     .Sortable()
     .Pageable()
 )
 
+@if (!string.IsNullOrEmpty(Model.CustomerGroupId))
+{
+    var group = Model.Groups.FirstOrDefault(x => x.CustomerGroupId == Model.CustomerGroupId);
+
+    <h3>Customer Group details for '@Model.CustomerGroupId'</h3>
+    <div>
+        <a href="/CustomerGroup/Create">Create</a> |
+        <a href="/CustomerGroup/Edit/@(Model.CustomerGroupId)">Edit</a> |
+        <a href="/CustomerGroup/Delete/@(Model.CustomerGroupId)">Delete</a>
+    </div>
+    <br />
+    <div>
+        <div class="form-group">
+            <b>Description</b>
+            <br />
+            <span>@group.Description</span>
+        </div>
+        <div class="form-group">
+            <b>IsSalesTaxIncludedInPrice</b>
+            <br />
+            <span>@group.IsSalesTaxIncludedInPrice</span>
+        </div>
+        <div class="form-group">
+            <b>PaymentTermId</b>
+            <br />
+            <span>@(string.IsNullOrEmpty(group.PaymentTermId) ? "<empty>" : group.PaymentTermId)</span>
+        </div>
+        <div class="form-group">
+            <b>TaxGroupId</b>
+            <br />
+            <span>@(string.IsNullOrEmpty(group.TaxGroupId) ? "<empty>" : group.TaxGroupId)</span>
+        </div>
+        <div class="form-group">
+            <b>DefaultDimensionDisplayValue</b>
+            <br />
+            <span>@(string.IsNullOrEmpty(group.DefaultDimensionDisplayValue) ? "<empty>" : group.DefaultDimensionDisplayValue)</span>
+        </div>
+    </div>
+}
 
 @section Scripts {
     <script src="~/js/mvc-grid.js"></script>

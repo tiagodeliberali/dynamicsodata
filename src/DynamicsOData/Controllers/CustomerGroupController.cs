@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using DynamicsOData.Services;
+using DynamicsOData.Models.CustomerGroupViewModel;
 
 namespace DynamicsOData.Controllers
 {
@@ -15,11 +16,15 @@ namespace DynamicsOData.Controllers
             this.odataService = odataService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string customerGroupId)
         {
-            var groups = await odataService.GetCustomerGroups();
+            var model = new IndexCustomerGroupViewModel
+            {
+                Groups = await odataService.GetCustomerGroups(),
+                CustomerGroupId = customerGroupId
+            };
 
-            return View(groups);
+            return View(model);
         }
     }
 }

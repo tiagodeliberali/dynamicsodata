@@ -25,10 +25,16 @@ namespace DynamicsOData.Services
             this.odataOptions = odataOptions.Value;
             this.httpClient = httpClient;
 
-            customerGroupUrl = this.odataOptions.BaseUrl + "/data/CustomerGroups";
-            customerUrl = this.odataOptions.BaseUrl + "/data/Customers";
-            customerByGroupUrl = this.odataOptions.BaseUrl + customerUrl + "?$filter=CustomerGroupId%20eq%20%27{0}%27";
-    }
+            BuildUrls();
+        }
+
+        private void BuildUrls()
+        {
+            customerGroupUrl = odataOptions.BaseUrl + "/data/CustomerGroups";
+            customerUrl = odataOptions.BaseUrl + "/data/Customers";
+
+            customerByGroupUrl = customerUrl + "?$filter=CustomerGroupId%20eq%20%27{0}%27";
+        }
 
         public async Task<List<CustomerGroup>> GetCustomerGroups()
         {
