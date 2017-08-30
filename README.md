@@ -24,7 +24,7 @@ To keep track of entity locks, we must be able to store them. For simplicity, th
 Due to time constrains, it was adopted a solution based on razor and jQuery.
 For production purpose it should be avoided, because it will add serious dificulties to create a rich experience for the customer.
 
-## SignalR (not implemented)
+## SignalR/WebSockets (not implemented)
 
 To keep clients updated regarding to locks, it is possible to rely on a socket techonology. allowing the customers to receive a notification when a entity previously locked were released.
 
@@ -32,7 +32,7 @@ To keep clients updated regarding to locks, it is possible to rely on a socket t
 
 The use of Microsoft Extensibility Framework (MEF) allow us to have a main solution and a different implementation for different customers. 
 
-Depending on the customization necessities, it is possible to implement a extension interface with before/after actions on the system and use MVC action filters to implement the behaviours imported through MEF.
+Depending on the customization necessities, it is possible to implement a extension interface with before/after actions on the system and consume them through MEF inside the main application. By this way we can keep things really separated, with our solution in one repository and customer's customizations in its own repositories.
 
 If the branching strategy is related to front end customizations, the solution can be even easier, with replacement of some base html/css files during the solution deployment.
 
