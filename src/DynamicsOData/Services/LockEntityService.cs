@@ -9,9 +9,9 @@ namespace DynamicsOData.Services
 {
     public class LockEntityService : ILockEntityService
     {
-        private ApplicationDbContext db;
+        private DynamicsDbContext db;
 
-        public LockEntityService(ApplicationDbContext db)
+        public LockEntityService(DynamicsDbContext db)
         {
             this.db = db;
         }

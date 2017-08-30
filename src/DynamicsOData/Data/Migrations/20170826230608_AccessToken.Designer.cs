@@ -7,7 +7,7 @@ using DynamicsOData.Data;
 
 namespace DynamicsOData.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(AccountDbContext))]
     [Migration("20170826230608_AccessToken")]
     partial class AccessToken
     {

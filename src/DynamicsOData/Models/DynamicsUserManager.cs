@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using DynamicsOData.Models.DynamicsEntities;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +12,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DynamicsOData.Models.DynamicsEntities
+namespace DynamicsOData.Models
 {
     public class DynamicsSignInManager<TUser> : SignInManager<TUser> where TUser : class
     {
@@ -34,7 +35,7 @@ namespace DynamicsOData.Models.DynamicsEntities
 
             var claim = await this.ClaimsFactory.CreateAsync(user);
 
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claim.Identity.AuthenticationType);
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity("Identity.Application");
             claimsIdentity.AddClaims(claim.Claims);
             claimsIdentity.AddClaim(new Claim(ApplicationUser.AccessTokenClaimType, applicationUser.AccessToken));
 

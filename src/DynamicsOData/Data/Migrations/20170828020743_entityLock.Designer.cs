@@ -7,7 +7,7 @@ using DynamicsOData.Data;
 
 namespace DynamicsOData.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(AccountDbContext))]
     [Migration("20170828020743_entityLock")]
     partial class entityLock
     {
