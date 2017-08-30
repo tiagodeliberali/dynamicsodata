@@ -74,7 +74,10 @@ namespace DynamicsOData.Services
 
         private bool IsLockedToAnotherUser(string userId, LockEntity entityLock)
         {
-            return entityLock != null && entityLock.IsLocked && entityLock.LastUserId != userId && entityLock.LastLockTime < DateTime.UtcNow.AddMinutes(30);
+            return entityLock != null 
+                && entityLock.IsLocked 
+                && entityLock.LastUserId != userId 
+                && entityLock.LastLockTime.AddMinutes(30) >= DateTime.UtcNow;
         }
     }
 }
